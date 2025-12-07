@@ -49,11 +49,7 @@ st.markdown("""
     .sidebar-item:hover {
         background-color: #E8EAED;
     }
-    .sidebar-item.active {
-        background-color: #FCE8E6;
-        color: #D93025;
-    }
-
+    
     /* Header */
     .header {
         display: flex;
@@ -110,6 +106,35 @@ st.markdown("""
         background-color: #1557B0 !important;
         box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15) !important;
     }
+    
+    /* Sidebar Navigation Button Styling */
+    /* Target buttons inside the sidebar specifically */
+    [data-testid="stSidebar"] .stButton > button {
+        background-color: transparent !important;
+        color: #202124 !important;
+        border: none !important;
+        text-align: left !important;
+        padding: 10px 20px !important;
+        border-radius: 0 20px 20px 0 !important;
+        margin-top: 5px !important;
+        width: 100% !important;
+        display: flex !important;
+        justify-content: flex-start !important;
+        font-weight: 500 !important;
+        box-shadow: none !important;
+    }
+    
+    [data-testid="stSidebar"] .stButton > button:hover {
+        background-color: #E8EAED !important;
+        box-shadow: none !important;
+    }
+    
+    [data-testid="stSidebar"] .stButton > button:focus {
+        background-color: #FCE8E6 !important;
+        color: #D93025 !important;
+        box-shadow: none !important;
+        border: none !important; 
+    }
 
     /* Result Badge */
     .result-badge {
@@ -132,24 +157,40 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# Initialize Session State
+if 'selected_page' not in st.session_state:
+    st.session_state['selected_page'] = "Demo"
+
 # Sidebar Layout
 with st.sidebar:
     st.image("https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lockup_default_1x_r5.png", width=100)
     
-    # Navigation
-    selected_page = st.radio(
-        "Navigation", 
-        ["Demo", "Dataset info", "Explanation"], 
-        label_visibility="collapsed"
-    )
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Navigation Buttons
+    if st.button("Demo", key="nav_demo", use_container_width=True):
+        st.session_state['selected_page'] = "Demo"
+        
+    if st.button("Dataset info", key="nav_dataset", use_container_width=True):
+        st.session_state['selected_page'] = "Dataset info"
+        
+    if st.button("Explanation", key="nav_explain", use_container_width=True):
+        st.session_state['selected_page'] = "Explanation"
     
     st.markdown("""
     <div style="margin-top: 20px;">
-        <a href="#" target="_blank" style="text-decoration: none;">
+        <a href="https://github.com/vargheesk/spam_filter" target="_blank" style="text-decoration: none;">
             <div class="sidebar-item">GitHub Repo</div>
         </a>
     </div>
     """, unsafe_allow_html=True)
+     # Header
+    st.markdown("""
+    <br><br>
+    """, unsafe_allow_html=True)
+    st.link_button("🌐 Developer Portfolio", "https://vargheeskutty-eldhose.vercel.app/")
+
+selected_page = st.session_state['selected_page']
 
 # Main Content
 col1, col2 = st.columns([1, 8])
